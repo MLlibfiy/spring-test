@@ -1,6 +1,8 @@
 package com.shujia.controller;
 
 import com.shujia.bean.StudentScore;
+import com.shujia.service.StudentService;
+import com.shujia.service.impl.StudentServiceImpl;
 import com.shujia.util.DBUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 学生控制器
@@ -18,6 +21,9 @@ import java.util.ArrayList;
 
 @RestController
 public class StudentController {
+
+    private StudentService studentService = new StudentServiceImpl();
+
 
     /**
      * value = "query"  访问路径
@@ -38,34 +44,12 @@ public class StudentController {
      * 如果要传多个参数中间用&号
      *
      */
-    public ArrayList<StudentScore> queryScore(String studentId) {
-        ArrayList<StudentScore> scores = new ArrayList<>();
-        Connection connection = DBUtil.getConnection();
+    public List<StudentScore> queryScore(String studentId) {
 
-        String sql = "select stu.id,stu.name,stu.clazz,cou.name as course,sco.score from student as  stu join score as  sco on stu.id=sco.student_id join cource as cou on sco.cource_id=cou.id where stu.id=?";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, studentId);
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
-                String id = resultSet.getString("id");
-                String name = resultSet.getString("name");
-                String clazz = resultSet.getString("clazz");
-                String course = resultSet.getString("course");
-                int score = resultSet.getInt("score");
+        List<StudentScore> studentScores = studentService.queryScoreById(studentId);
 
-                StudentScore studentScore = new StudentScore(id, name, clazz, course, score);
-                scores.add(studentScore);
-            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            DBUtil.close(connection,preparedStatement);
-        }
-        return scores;
-
+        return studentScores;
     }
 }
