@@ -3,6 +3,7 @@ package com.shujia.dao.impl;
 import com.shujia.bean.StudentScore;
 import com.shujia.dao.StudentDao;
 import com.shujia.util.DBUtil;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class StudentDaoImpl implements StudentDao {
     @Override
     public List<StudentScore> queryScoreById(String studentId) {

@@ -2,17 +2,11 @@ package com.shujia.controller;
 
 import com.shujia.bean.StudentScore;
 import com.shujia.service.StudentService;
-import com.shujia.service.impl.StudentServiceImpl;
-import com.shujia.util.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +16,14 @@ import java.util.List;
 @RestController
 public class StudentController {
 
-    private StudentService studentService = new StudentServiceImpl();
+    /**
+     *
+     * 依赖注入
+     * spring 会去他的容器里卖弄找类型匹配的对象自动注入进来
+     *
+     */
+    @Autowired
+    private StudentService studentService;
 
 
     /**
